@@ -31,3 +31,13 @@ Error: `npm does not support Node.js v10.15.2`
 Problem: npm is wrong version
 
 Solution: `sudo npm install npm -g`
+
+
+
+Error: Hot reloading not working
+
+Problem: some limit being hit by the watcher
+
+Solution: `sudo echo 1048576 > /proc/sys/fs/inotify/max_user_watches`
+
+Source: https://stackoverflow.com/a/42311067
