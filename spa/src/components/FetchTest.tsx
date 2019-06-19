@@ -10,14 +10,14 @@ interface State {
 }
 
 export interface HouseDetails {
+    name: string;
+    region: string;
+    words: string;
+    currentLord: string;
     url?: string;
-    name?: string;
-    region?: string;
     coatOfArms?: string;
-    words?: string;
     titles?: string[];
     seats?: string[];
-    currentLord?: string;
     heir?: string;
     overlord?: string;
     founded?: string;
@@ -34,7 +34,12 @@ export default class FetchTest extends React.Component<Props, State> {
         this.state = {
             error: null,
             isLoaded: false,
-            houseDetails: {}
+            houseDetails: {
+                name: '',
+                region: '',
+                words: '',
+                currentLord: '',
+            }
         };
     }
 
