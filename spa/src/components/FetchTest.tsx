@@ -51,7 +51,7 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
-export default class FetchTest extends React.Component<Props, State> {
+export class FetchTest extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {

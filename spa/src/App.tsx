@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import FetchTest from './components/FetchTest'
+import {FetchTest} from './components/FetchTest'
 
 const App: React.FC = () => {
   return (
