@@ -6,7 +6,26 @@ interface Props {
 interface State {
     error: any,
     isLoaded: boolean,
-    items: any,
+    houseDetails: HouseDetails,
+}
+
+export interface HouseDetails {
+    url?: string;
+    name?: string;
+    region?: string;
+    coatOfArms?: string;
+    words?: string;
+    titles?: string[];
+    seats?: string[];
+    currentLord?: string;
+    heir?: string;
+    overlord?: string;
+    founded?: string;
+    founder?: string;
+    diedOut?: string;
+    ancestralWeapons?: string[];
+    cadetBranches?: string[];
+    swornMembers?: string[];
 }
 
 export default class FetchTest extends React.Component<Props, State> {
@@ -15,7 +34,7 @@ export default class FetchTest extends React.Component<Props, State> {
         this.state = {
             error: null,
             isLoaded: false,
-            items: []
+            houseDetails: {}
         };
     }
 
@@ -26,7 +45,7 @@ export default class FetchTest extends React.Component<Props, State> {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        items: result.swornMembers
+                        houseDetails: result
                     });
                 },
                 (error) => {
@@ -39,20 +58,23 @@ export default class FetchTest extends React.Component<Props, State> {
     }
 
     render() {
-        const { error, isLoaded, items } = this.state;
+        const { error, isLoaded, houseDetails } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
-                <ul>
-                    {items.map((item: string, index: number) => (
-                        <li key={index}>
-                            {item}
-                        </li>
-                    ))}
-                </ul>
+                <p>
+                    {houseDetails.name}
+                </p>
+                //                <ul>
+                //                    {Object.keys(items).map((item: string, index: number) => (
+                //                        <li key={index}>
+                //                            {item}
+                //                        </li>
+                //                    ))}
+                //                </ul>
             );
         }
     }
