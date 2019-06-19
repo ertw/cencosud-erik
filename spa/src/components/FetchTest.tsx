@@ -65,7 +65,7 @@ export interface CharacterDetails {
 const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
 
 class FetchTest extends React.Component<RouteComponentProps, State> {
-    constructor(props) {
+    constructor(props : RouteComponentProps) {
         super(props);
         this.state = {
             error: null,
