@@ -6,9 +6,9 @@ const { Option } = Select
 // this module declaration is a workaround for missing label on <OptionProps>
 //
 declare module "antd/lib/select" {
-  export interface OptionProps {
-    label?: string;
-  }
+    export interface OptionProps {
+        label?: string;
+    }
 }
 
 interface Props {
@@ -114,8 +114,12 @@ export class FetchTest extends React.Component<Props, State> {
                     onChange={(value) => { console.log(value) }}
                     optionLabelProp="label"
                 >
-                    {houses.map((house, index : number) => (
-                        <Option key = {index} value = {house.url} label = {house.name}>
+                    {houses.map((house, index: number) => (
+                        <Option
+                            key={index}
+                            value={JSON.stringify({name: house.name, url: house.url})}
+                            label={house.name}
+                            >
                             {house.name}
                         </Option>
                     ))}
