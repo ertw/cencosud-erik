@@ -9,6 +9,8 @@ interface State {
     houseDetails: HouseDetails,
 }
 
+export interface Houses extends Array<HouseDetails> { }
+
 export interface HouseDetails {
     name: string;
     region: string;
@@ -26,6 +28,27 @@ export interface HouseDetails {
     ancestralWeapons?: string[];
     cadetBranches?: string[];
     swornMembers?: string[];
+}
+
+export interface Characters extends Array<CharacterDetails> { }
+
+export interface CharacterDetails {
+    name: string;
+    gender: string;
+    culture: string;
+    born: string;
+    died: string;
+    titles: string[];
+    aliases: string[];
+    father: string;
+    mother: string;
+    spouse: string;
+    allegiances: string[];
+    url?: string;
+    books?: string[];
+    povBooks?: string[];
+    tvSeries?: string[];
+    playedBy?: string[];
 }
 
 export default class FetchTest extends React.Component<Props, State> {
