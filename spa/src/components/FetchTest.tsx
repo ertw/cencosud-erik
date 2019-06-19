@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Select, Layout } from 'antd'
+import { Select, Layout, Card } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 const { Option } = Select
 const { Sider, Content } = Layout;
@@ -65,7 +65,7 @@ export interface CharacterDetails {
 const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
 
 class FetchTest extends React.Component<RouteComponentProps, State> {
-    constructor(props : RouteComponentProps) {
+    constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
             error: null,
@@ -142,6 +142,15 @@ class FetchTest extends React.Component<RouteComponentProps, State> {
                                 </Option>
                             ))}
                         </Select>
+                        {console.log(houses)}
+                        {houses
+                            .filter(house => (house.url === `https://anapioficeandfire.com/api/houses${history.location.pathname}`))
+                            .map(house => (
+                            <Card title={house.name} style={{ width: '100%' }}>
+                                <p>{house.currentLord}</p>
+                            </Card>
+                            ))
+                            }
                     </Sider>
                     <Content>
                         {characters
@@ -149,9 +158,18 @@ class FetchTest extends React.Component<RouteComponentProps, State> {
                             .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                             .map((character, index) => (
                                 <div key={index}>
-                                    <p>
-                                        {character.name}
-                                    </p>
+                                    <Card title={character.name} style={{ width: 300 }}>
+                                        <p>{character.culture}</p>
+                                        <p>Born: {character.born || '?'}</p>
+                                        <p>Died: {character.died || '?'}</p>
+                                        <p>{character.gender}</p>
+                                        <p>{character.titles}</p>
+                                        <p>{character.aliases}</p>
+                                        <p>{character.father}</p>
+                                        <p>{character.mother}</p>
+                                        <p>{character.spouse}</p>
+                                        <p>{character.allegiances}</p>
+                                    </Card>
                                 </div>
                             ))
                         }
