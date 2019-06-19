@@ -7,6 +7,7 @@ interface State {
     error: any,
     isLoaded: boolean,
     houses: Houses,
+    linkHeader: string,
 }
 
 export interface Houses extends Array<HouseDetails> { }
@@ -57,27 +58,33 @@ export class FetchTest extends React.Component<Props, State> {
         this.state = {
             error: null,
             isLoaded: false,
-            houses: []
+            houses: [],
+            linkHeader: '',
         };
     }
 
     componentDidMount() {
-        fetch("https://anapioficeandfire.com/api/houses")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        houses: result
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
+
+        const endpoint = 'https://anapioficeandfire.com/api'
+        const pageSize = 50
+
+            ; (async () => {
+                let pageNumber = 1
+                let houses: Houses = []
+                let response = await fetch(`${endpoint}/houses?page=${pageNumber}&pageSize=${pageSize}`)
+                let returnedHouses = await response.json()
+                houses = houses.concat(returnedHouses)
+                while (returnedHouses.length === pageSize) {
+                    ++pageNumber
+                    response = await fetch(`${endpoint}/houses?page=${pageNumber}&pageSize=${pageSize}`)
+                    returnedHouses = await response.json()
+                    houses = houses.concat(returnedHouses)
                 }
-            )
+                this.setState({
+                    isLoaded: true,
+                    houses,
+                });
+            })()
     }
 
     render() {
