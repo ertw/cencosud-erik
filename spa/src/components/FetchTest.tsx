@@ -6,7 +6,7 @@ interface Props {
 interface State {
     error: any,
     isLoaded: boolean,
-    houseDetails: HouseDetails,
+    houses: Houses,
 }
 
 export interface Houses extends Array<HouseDetails> { }
@@ -57,23 +57,18 @@ export class FetchTest extends React.Component<Props, State> {
         this.state = {
             error: null,
             isLoaded: false,
-            houseDetails: {
-                name: '',
-                region: '',
-                words: '',
-                currentLord: '',
-            }
+            houses: []
         };
     }
 
     componentDidMount() {
-        fetch("https://anapioficeandfire.com/api/houses/378")
+        fetch("https://anapioficeandfire.com/api/houses")
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        houseDetails: result
+                        houses: result
                     });
                 },
                 (error) => {
@@ -86,23 +81,20 @@ export class FetchTest extends React.Component<Props, State> {
     }
 
     render() {
-        const { error, isLoaded, houseDetails } = this.state;
+        const { error, isLoaded, houses } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
-                <p>
-                    {houseDetails.name}
-                </p>
-                //                <ul>
-                //                    {Object.keys(items).map((item: string, index: number) => (
-                //                        <li key={index}>
-                //                            {item}
-                //                        </li>
-                //                    ))}
-                //                </ul>
+                <ul>
+                    {houses.map((house, index: number) => (
+                        <li key={index}>
+                            {house.name}
+                        </li>
+                    ))}
+                </ul>
             );
         }
     }
