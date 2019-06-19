@@ -6,6 +6,7 @@
 | Typescript |    will potentially help me find errors | additional build tooling adds complexity |
 | create-react-app | batteries included, will help bootstrap the project quickly | opinionated |
 | react-router    |  wide adoption, good pattern for state management |
+| ant design    |  gives me premade design patterns so that I can get something up quickly | I'm not familiar with it, so might run into unexpected issues |
 
 ## Dev environment 
 

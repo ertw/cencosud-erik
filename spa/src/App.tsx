@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { FetchTest } from './components/FetchTest'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Button from 'antd/lib/button';
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const App: React.FC = () => {
             Edit <code>src/App.tsx</code> and save to reload.
         </p>
           <Route path="/houses" component={FetchTest} />
+          <Route path="/button" component={() => <Button type="primary">Button</Button>} />
           <a
             className="App-link"
             href="https://reactjs.org"
