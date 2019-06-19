@@ -1,10 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { FetchTest } from './components/FetchTest'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import FetchTest from './components/FetchTest'
+import { BrowserRouter as Router } from "react-router-dom";
 import { Layout } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer } = Layout;
 
 const App: React.FC = () => {
   return (
@@ -13,14 +12,8 @@ const App: React.FC = () => {
         <Layout>
           <Header>
           </Header>
-          <Layout>
-            <Sider>
-              <Route path="/houses" component={FetchTest} />
-            </Sider>
-            <Content>
-              Some content
-          </Content>
-          </Layout>
+            <FetchTest>
+            </FetchTest>
           <Footer>
           </Footer>
         </Layout>

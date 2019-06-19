@@ -1,6 +1,8 @@
 import * as React from 'react'
-import { Select } from 'antd'
+import { Select, Layout } from 'antd'
+import { withRouter, RouteComponentProps } from 'react-router';
 const { Option } = Select
+const { Sider, Content } = Layout;
 
 //
 // this module declaration is a workaround for missing label on <OptionProps>
@@ -11,14 +13,11 @@ declare module "antd/lib/select" {
     }
 }
 
-interface Props {
-}
-
 interface State {
     error: any,
     isLoaded: boolean,
     houses: Houses,
-    linkHeader: string,
+    characters: Characters,
 }
 
 export interface Houses extends Array<HouseDetails> { }
@@ -63,14 +62,16 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
-export class FetchTest extends React.Component<Props, State> {
+const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
+
+class FetchTest extends React.Component<RouteComponentProps, State> {
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
             houses: [],
-            linkHeader: '',
+            characters: [],
         };
     }
 
@@ -80,51 +81,85 @@ export class FetchTest extends React.Component<Props, State> {
         const pageSize = 50
 
             ; (async () => {
-                let pageNumber = 1
+                let housePageNumber = 1
                 let houses: Houses = []
-                let response = await fetch(`${endpoint}/houses?page=${pageNumber}&pageSize=${pageSize}`)
-                let returnedHouses = await response.json()
+                let houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
+                let returnedHouses = await houseResponse.json()
                 houses = houses.concat(returnedHouses)
                 while (returnedHouses.length === pageSize) {
-                    ++pageNumber
-                    response = await fetch(`${endpoint}/houses?page=${pageNumber}&pageSize=${pageSize}`)
-                    returnedHouses = await response.json()
+                    ++housePageNumber
+                    houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
+                    returnedHouses = await houseResponse.json()
                     houses = houses.concat(returnedHouses)
+                }
+                let characterPageNumber = 1
+                let characters: Characters = []
+                let characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
+                let returnedCharacters = await characterResponse.json()
+                characters = characters.concat(returnedCharacters)
+                while (returnedCharacters.length === pageSize) {
+                    ++characterPageNumber
+                    characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
+                    returnedCharacters = await characterResponse.json()
+                    characters = characters.concat(returnedCharacters)
                 }
                 this.setState({
                     isLoaded: true,
                     houses,
+                    characters,
                 });
             })()
     }
 
 
     render() {
-        const { error, isLoaded, houses } = this.state;
+        const { error, isLoaded, houses, characters } = this.state
+        const { history } = this.props
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
-                <Select
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    placeholder="Select a House"
-                    onChange={(value) => { console.log(value) }}
-                    optionLabelProp="label"
-                >
-                    {houses.map((house, index: number) => (
-                        <Option
-                            key={index}
-                            value={JSON.stringify({name: house.name, url: house.url})}
-                            label={house.name}
-                            >
-                            {house.name}
-                        </Option>
-                    ))}
-                </Select>
+                <Layout>
+                    <Sider>
+                        <Select
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Select a House"
+                            onChange={(value, option) => {
+                                history.push(parseHouseUrlNumber(value as string))
+                            }}
+                            optionLabelProp="children"
+                        >
+                            {houses.map((house, index: number) => (
+                                <Option
+                                    key={index}
+                                    value={JSON.stringify({ name: house.name, url: house.url })}
+                                    label={house.name}
+                                >
+                                    {house.name}
+                                </Option>
+                            ))}
+                        </Select>
+                    </Sider>
+                    <Content>
+                        {characters
+                            .filter(character => (character.allegiances[0] === `https://anapioficeandfire.com/api/houses${history.location.pathname}`))
+                            .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
+                            .map((character, index) => (
+                                <div key={index}>
+                                    <p>
+                                        {character.name}
+                                    </p>
+                                </div>
+                            ))
+                        }
+                    </Content>
+                </Layout >
             );
         }
     }
 }
+
+export default withRouter(FetchTest)
