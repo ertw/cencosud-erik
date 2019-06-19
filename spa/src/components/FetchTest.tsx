@@ -1,4 +1,15 @@
 import * as React from 'react'
+import { Select } from 'antd'
+const { Option } = Select
+
+//
+// this module declaration is a workaround for missing label on <OptionProps>
+//
+declare module "antd/lib/select" {
+  export interface OptionProps {
+    label?: string;
+  }
+}
 
 interface Props {
 }
@@ -87,6 +98,7 @@ export class FetchTest extends React.Component<Props, State> {
             })()
     }
 
+
     render() {
         const { error, isLoaded, houses } = this.state;
         if (error) {
@@ -95,13 +107,19 @@ export class FetchTest extends React.Component<Props, State> {
             return <div>Loading...</div>;
         } else {
             return (
-                <ul>
-                    {houses.map((house, index: number) => (
-                        <li key={index}>
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="Select a House"
+                    onChange={(value) => { console.log(value) }}
+                    optionLabelProp="label"
+                >
+                    {houses.map((house, index : number) => (
+                        <Option key = {index} value = {house.url} label = {house.name}>
                             {house.name}
-                        </li>
+                        </Option>
                     ))}
-                </ul>
+                </Select>
             );
         }
     }
