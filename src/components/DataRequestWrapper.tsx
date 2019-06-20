@@ -156,7 +156,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                         {houses
                             .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
                             .map(house => (
-                                <HouseCard key={house.name} house={house} characters={characters}/>
+                                <HouseCard key={house.name} house={house} characters={characters} />
                             ))
                         }
                         {characters
