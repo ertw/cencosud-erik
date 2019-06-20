@@ -156,7 +156,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                         {houses
                             .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
                             .map(house => (
-                                <HouseCard house={house} characters={characters}/>
+                                <HouseCard key={house.name} house={house} characters={characters}/>
                             ))
                         }
                         {characters
@@ -165,7 +165,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                             .map((character, index) => (
                                 <Col span={8} key={index}>
-                                    <CharacterCard houses={houses} characters={characters} character={character} />
+                                    <CharacterCard key={character.name} houses={houses} characters={characters} character={character} />
                                 </Col>
                             ))
                         }
