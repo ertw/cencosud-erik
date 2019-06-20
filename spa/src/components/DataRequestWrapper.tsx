@@ -156,28 +156,28 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             .map(house => (
                                 <Card title={house.name} style={{ width: '100%' }}>
                                     <Row>
-                                        <Col style={{width: '100%'}}>
+                                        <Col style={{ width: '100%' }}>
                                             <Title level={2}>{house.name}</Title>
                                         </Col>
                                     </Row>
                                     <Row>
-                                        {house.currentLord ? 
-                                        <Col span={8}>
-                                            <Text>Current Lord: </Text><Text>{findCharacterByUrl(house.currentLord, characters)!.name}</Text>
-                                        </Col>
-                                        : null
+                                        {house.currentLord ?
+                                            <Col span={8}>
+                                                <Text>Current Lord: </Text><Text>{findCharacterByUrl(house.currentLord, characters)!.name}</Text>
+                                            </Col>
+                                            : null
                                         }
-                                        {house.region ? 
-                                        <Col span={8}>
-                                            <Text>Region: </Text><Text>{house.region}</Text>
-                                        </Col>
-                                        : null
+                                        {house.region ?
+                                            <Col span={8}>
+                                                <Text>Region: </Text><Text>{house.region}</Text>
+                                            </Col>
+                                            : null
                                         }
-                                        {house.words ? 
-                                        <Col span={8}>
-                                            <Text>{house.words}</Text>
-                                        </Col>
-                                        : null
+                                        {house.words ?
+                                            <Col span={8}>
+                                                <Text>{house.words}</Text>
+                                            </Col>
+                                            : null
                                         }
                                     </Row>
                                 </Card>
