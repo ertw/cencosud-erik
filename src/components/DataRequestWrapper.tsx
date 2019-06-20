@@ -1,9 +1,12 @@
 import * as React from 'react'
-import { Select, Layout, Card, Col, Row, Typography, List } from 'antd'
+import { Select, Layout, Col, } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
+import CharacterCard from './CharacterCard'
+import HouseCard from './HouseCard'
+
 const { Option } = Select
 const { Header, Content } = Layout;
-const { Text, Title } = Typography
+
 const endpoint = 'https://anapioficeandfire.com/api'
 
 //
@@ -64,12 +67,12 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
-const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
+export const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
 
-const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
+export const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
     .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`))
 
-const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
+export const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
     .find(character => character.url === characterUrl))
 
 class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
@@ -118,7 +121,6 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
             })()
     }
 
-
     render() {
         const { error, isLoaded, houses, characters } = this.state
         const { history } = this.props
@@ -154,33 +156,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                         {houses
                             .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
                             .map(house => (
-                                <Card title={house.name} style={{ width: '100%' }}>
-                                    <Row>
-                                        <Col style={{ width: '100%' }}>
-                                            <Title level={2}>{house.name}</Title>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        {house.currentLord ?
-                                            <Col span={8}>
-                                                <Text>Current Lord: </Text><Text>{findCharacterByUrl(house.currentLord, characters)!.name}</Text>
-                                            </Col>
-                                            : null
-                                        }
-                                        {house.region ?
-                                            <Col span={8}>
-                                                <Text>Region: </Text><Text>{house.region}</Text>
-                                            </Col>
-                                            : null
-                                        }
-                                        {house.words ?
-                                            <Col span={8}>
-                                                <Text>{house.words}</Text>
-                                            </Col>
-                                            : null
-                                        }
-                                    </Row>
-                                </Card>
+                                <HouseCard house={house} characters={characters}/>
                             ))
                         }
                         {characters
@@ -189,85 +165,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                             .map((character, index) => (
                                 <Col span={8} key={index}>
-                                    <Card
-                                        title={<React.Fragment>
-                                            <Title level={2}>{character.name}</Title>
-                                            <Text style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-                                                {character.gender === 'Male' ? '♂' : '♀'}
-                                            </Text>
-                                            {character.born ? <div><Text type='secondary'>{`Born ${character.born}`}</Text></div> : null}
-                                            {character.died ? <div><Text type='secondary'>{`Died ${character.died}`}</Text></div> : null}
-                                        </React.Fragment>}
-                                        style={{
-                                            height: '25rem',
-                                            margin: '1rem',
-                                            textAlign: 'left',
-                                            overflowY: 'auto',
-                                            overflowX: 'hidden',
-                                        }}>
-                                        {character.aliases && character.aliases[0] !== '' ?
-                                            <List
-                                                size='small'
-                                                style={{ marginBottom: '1rem' }}
-                                                header={<div><Text strong>Aliases</Text></div>}
-                                                bordered
-                                                dataSource={character.aliases}
-                                                renderItem={item => (
-                                                    <List.Item>
-                                                        {item}
-                                                    </List.Item>
-                                                )}
-                                            />
-                                            : null
-                                        }
-                                        {character.titles && character.titles[0] !== '' ?
-                                            <List
-                                                size='small'
-                                                style={{ marginBottom: '1rem' }}
-                                                header={<div><Text strong>Titles</Text></div>}
-                                                bordered
-                                                dataSource={character.titles}
-                                                renderItem={item => (
-                                                    <List.Item>
-                                                        {item}
-                                                    </List.Item>
-                                                )}
-                                            />
-                                            : null
-                                        }
-                                        <List
-                                            size='small'
-                                            style={{ marginBottom: '1rem' }}
-                                            header={<div><Text strong>Allegiances</Text></div>}
-                                            bordered
-                                            dataSource={character.allegiances.map(allegiance => findHouseByUrlNumber(parseHouseUrlNumber(allegiance), houses)!.name)}
-                                            renderItem={item => (
-                                                <List.Item>
-                                                    {item}
-                                                </List.Item>
-                                            )}
-                                        />
-                                        {character.culture || character.father || character.mother || character.spouse ?
-                                            <List
-                                                size='small'
-                                                style={{ marginBottom: '1rem' }}
-                                                header={<div><Text strong>Other Data</Text></div>}
-                                                bordered
-                                                dataSource={[
-                                                    character.culture ? `Culture: ${character.culture}` : null,
-                                                    character.father ? `Father: ${character.father}` : null,
-                                                    character.mother ? `Mother: ${character.mother}` : null,
-                                                    character.spouse ? `Spouse: ${findCharacterByUrl(character.spouse, characters)!.name}` : null,
-                                                ].filter(x => !!x)}
-                                                renderItem={item => (
-                                                    <List.Item>
-                                                        {item}
-                                                    </List.Item>
-                                                )}
-                                            />
-                                            : null
-                                        }
-                                    </Card>
+                                    <CharacterCard houses={houses} characters={characters} character={character} />
                                 </Col>
                             ))
                         }
