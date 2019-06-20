@@ -7,7 +7,7 @@ import {
     findCharacterByUrl,
 } from './DataRequestWrapper'
 
-const { Text, Title } = Typography
+const { Text, } = Typography
 
 
 interface Props extends RouteComponentProps {
@@ -24,11 +24,6 @@ const HouseCard: React.FunctionComponent<Props> = (props) => {
 
     return (
         <Card title={house.name} style={{ width: '100%' }}>
-            <Row>
-                <Col style={{ width: '100%' }}>
-                    <Title level={2}>{house.name}</Title>
-                </Col>
-            </Row>
             <Row>
                 {house.currentLord ?
                     <Col span={8}>

@@ -5,8 +5,9 @@ import {
     Col,
     Spin,
     Typography,
+    Card,
 } from 'antd'
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps, Route } from 'react-router';
 import CharacterCard from './CharacterCard'
 import HouseCard from './HouseCard'
 
@@ -159,13 +160,20 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             ))}
                         </Select>
                     </Header>
-                    <Content>
-                        {houses
-                            .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
-                            .map(house => (
-                                <HouseCard key={house.name} house={house} characters={characters} />
-                            ))
-                        }
+                    <Content style={{marginTop: '4rem'}}>
+                        <Route exact path="/" component={() => (
+                            <Card title={'Select a House'} style={{ width: '100%' }} />
+                        )} />
+                        <Route path={'/:house'} component={() => (
+                            <React.Fragment>
+                                {houses
+                                        .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
+                                        .map(house => (
+                                            <HouseCard key={house.name} house={house} characters={characters} />
+                                        ))
+                                }
+                            </React.Fragment>
+                        )} />
                         {characters
                             .filter(character => (character.allegiances
                                 .find(allegiance => allegiance === `${endpoint}/houses${history.location.pathname}`)))
