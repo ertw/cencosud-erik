@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import FetchTest from './components/FetchTest'
+import DataRequestWrapper from './components/DataRequestWrapper'
 import { BrowserRouter as Router } from "react-router-dom";
 import { Layout } from 'antd';
 const { Footer } = Layout;
@@ -10,8 +10,7 @@ const App: React.FC = () => {
     <div className="App">
       <Router>
         <Layout>
-            <FetchTest>
-            </FetchTest>
+            <DataRequestWrapper />
           <Footer>
           </Footer>
         </Layout>

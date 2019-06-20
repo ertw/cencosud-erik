@@ -72,7 +72,7 @@ const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) =
 const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
     .find(character => character.url === characterUrl))
 
-class FetchTest extends React.Component<RouteComponentProps, State> {
+class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
     constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
@@ -253,4 +253,4 @@ class FetchTest extends React.Component<RouteComponentProps, State> {
     }
 }
 
-export default withRouter(FetchTest)
+export default withRouter(DataRequestWrapper)
