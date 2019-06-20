@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Select, Layout, Card, Col, Typography, List } from 'antd'
+import { Select, Layout, Card, Col, Row, Typography, List } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 const { Option } = Select
 const { Header, Content } = Layout;
@@ -155,7 +155,31 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             .filter(house => (house.url === `https://anapioficeandfire.com/api/houses${history.location.pathname}`))
                             .map(house => (
                                 <Card title={house.name} style={{ width: '100%' }}>
-                                    <p>{house.currentLord}</p>
+                                    <Row>
+                                        <Col style={{width: '100%'}}>
+                                            <Title level={2}>{house.name}</Title>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        {house.currentLord ? 
+                                        <Col span={8}>
+                                            <Text>Current Lord: </Text><Text>{findCharacterByUrl(house.currentLord, characters)!.name}</Text>
+                                        </Col>
+                                        : null
+                                        }
+                                        {house.region ? 
+                                        <Col span={8}>
+                                            <Text>Region: </Text><Text>{house.region}</Text>
+                                        </Col>
+                                        : null
+                                        }
+                                        {house.words ? 
+                                        <Col span={8}>
+                                            <Text>{house.words}</Text>
+                                        </Col>
+                                        : null
+                                        }
+                                    </Row>
                                 </Card>
                             ))
                         }
@@ -174,7 +198,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                                             {character.died ? <div><Text type='secondary'>{`Died ${character.died}`}</Text></div> : null}
                                         </React.Fragment>}
                                         style={{
-                                            height: '20rem',
+                                            height: '25rem',
                                             margin: '1rem',
                                             textAlign: 'left',
                                             overflowY: 'auto',
