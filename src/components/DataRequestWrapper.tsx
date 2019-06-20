@@ -1,11 +1,18 @@
 import * as React from 'react'
-import { Select, Layout, Col, } from 'antd'
+import {
+    Select,
+    Layout,
+    Col,
+    Spin,
+    Typography,
+} from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 import CharacterCard from './CharacterCard'
 import HouseCard from './HouseCard'
 
 const { Option } = Select
 const { Header, Content } = Layout;
+const { Title } = Typography
 
 const endpoint = 'https://anapioficeandfire.com/api'
 
@@ -127,7 +134,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-            return <div>Loading...</div>;
+            return <div><Title>Loading external data...</Title><Spin /></div>
         } else {
             return (
                 <Layout>
