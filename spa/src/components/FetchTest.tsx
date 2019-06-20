@@ -1,8 +1,10 @@
 import * as React from 'react'
-import { Select, Layout, Card } from 'antd'
+import { Select, Layout, Card, Col, Typography, List } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 const { Option } = Select
-const { Sider, Content } = Layout;
+const { Header, Content } = Layout;
+const { Text, Title } = Typography
+const endpoint = 'https://anapioficeandfire.com/api'
 
 //
 // this module declaration is a workaround for missing label on <OptionProps>
@@ -64,6 +66,12 @@ export interface CharacterDetails {
 
 const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
 
+const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
+    .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`))
+
+const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
+    .find(character => character.url === characterUrl))
+
 class FetchTest extends React.Component<RouteComponentProps, State> {
     constructor(props: RouteComponentProps) {
         super(props);
@@ -77,7 +85,6 @@ class FetchTest extends React.Component<RouteComponentProps, State> {
 
     componentDidMount() {
 
-        const endpoint = 'https://anapioficeandfire.com/api'
         const pageSize = 50
 
             ; (async () => {
@@ -122,10 +129,10 @@ class FetchTest extends React.Component<RouteComponentProps, State> {
         } else {
             return (
                 <Layout>
-                    <Sider>
+                    <Header style={{ position: 'fixed', width: '100%', zIndex: 1, padding: '0 1rem' }}>
                         <Select
                             showSearch
-                            style={{ width: '100%' }}
+                            style={{ float: 'right', margin: '1rem 0', width: '15rem' }}
                             placeholder="Select a House"
                             onChange={(value, option) => {
                                 history.push(parseHouseUrlNumber(value as string))
@@ -142,35 +149,101 @@ class FetchTest extends React.Component<RouteComponentProps, State> {
                                 </Option>
                             ))}
                         </Select>
-                        {console.log(houses)}
+                    </Header>
+                    <Content>
                         {houses
                             .filter(house => (house.url === `https://anapioficeandfire.com/api/houses${history.location.pathname}`))
                             .map(house => (
-                            <Card title={house.name} style={{ width: '100%' }}>
-                                <p>{house.currentLord}</p>
-                            </Card>
+                                <Card title={house.name} style={{ width: '100%' }}>
+                                    <p>{house.currentLord}</p>
+                                </Card>
                             ))
-                            }
-                    </Sider>
-                    <Content>
+                        }
                         {characters
                             .filter(character => (character.allegiances[0] === `https://anapioficeandfire.com/api/houses${history.location.pathname}`))
                             .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                             .map((character, index) => (
-                                <div key={index}>
-                                    <Card title={character.name} style={{ width: 300 }}>
-                                        <p>{character.culture}</p>
-                                        <p>Born: {character.born || '?'}</p>
-                                        <p>Died: {character.died || '?'}</p>
-                                        <p>{character.gender}</p>
-                                        <p>{character.titles}</p>
-                                        <p>{character.aliases}</p>
-                                        <p>{character.father}</p>
-                                        <p>{character.mother}</p>
-                                        <p>{character.spouse}</p>
-                                        <p>{character.allegiances}</p>
+                                <Col span={8} key={index}>
+                                    <Card
+                                        title={<React.Fragment>
+                                            <Title level={2}>{character.name}</Title>
+                                            <Text style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+                                                {character.gender === 'Male' ? '♂' : '♀'}
+                                            </Text>
+                                            {character.born ? <div><Text type='secondary'>{`Born ${character.born}`}</Text></div> : null}
+                                            {character.died ? <div><Text type='secondary'>{`Died ${character.died}`}</Text></div> : null}
+                                        </React.Fragment>}
+                                        style={{
+                                            height: '20rem',
+                                            margin: '1rem',
+                                            textAlign: 'left',
+                                            overflowY: 'auto',
+                                            overflowX: 'hidden',
+                                        }}>
+                                        {character.aliases && character.aliases[0] != '' ?
+                                            <List
+                                                size='small'
+                                                style={{ marginBottom: '1rem' }}
+                                                header={<div><Text strong>Aliases</Text></div>}
+                                                bordered
+                                                dataSource={character.aliases}
+                                                renderItem={item => (
+                                                    <List.Item>
+                                                        {item}
+                                                    </List.Item>
+                                                )}
+                                            />
+                                            : null
+                                        }
+                                        {character.titles && character.titles[0] != '' ?
+                                            <List
+                                                size='small'
+                                                style={{ marginBottom: '1rem' }}
+                                                header={<div><Text strong>Titles</Text></div>}
+                                                bordered
+                                                dataSource={character.titles}
+                                                renderItem={item => (
+                                                    <List.Item>
+                                                        {item}
+                                                    </List.Item>
+                                                )}
+                                            />
+                                            : null
+                                        }
+                                        <List
+                                            size='small'
+                                            style={{ marginBottom: '1rem' }}
+                                            header={<div><Text strong>Allegiances</Text></div>}
+                                            bordered
+                                            dataSource={character.allegiances.map(allegiance => findHouseByUrlNumber(parseHouseUrlNumber(allegiance), houses)!.name)}
+                                            renderItem={item => (
+                                                <List.Item>
+                                                    {item}
+                                                </List.Item>
+                                            )}
+                                        />
+                                        {character.culture || character.father || character.mother || character.spouse ?
+                                            <List
+                                                size='small'
+                                                style={{ marginBottom: '1rem' }}
+                                                header={<div><Text strong>Other Data</Text></div>}
+                                                bordered
+                                                dataSource={[
+                                                    character.culture ? `Culture: ${character.culture}` : null,
+                                                    character.father ? `Father: ${character.father}` : null,
+                                                    character.mother ? `Mother: ${character.mother}` : null,
+                                                    character.spouse ? `Spouse: ${findCharacterByUrl(character.spouse, characters)!.name}` : null,
+                                                ].filter(x => !!x)}
+                                                renderItem={item => (
+                                                    <List.Item>
+                                                        {item}
+                                                    </List.Item>
+                                                )}
+                                            />
+                                            : null
+                                        }
                                     </Card>
-                                </div>
+                                </Col>
                             ))
                         }
                     </Content>
