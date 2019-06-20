@@ -1,4 +1,4 @@
-# cencosud-erik
+# Game of Throne API consumption demo
 
 ## Dev environment 
 
