@@ -184,7 +184,8 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             ))
                         }
                         {characters
-                            .filter(character => (character.allegiances[0] === `https://anapioficeandfire.com/api/houses${history.location.pathname}`))
+                            .filter(character => (character.allegiances
+                                .find(allegiance => allegiance === `https://anapioficeandfire.com/api/houses${history.location.pathname}`)))
                             .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                             .map((character, index) => (
                                 <Col span={8} key={index}>
