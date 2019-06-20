@@ -180,7 +180,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                                             overflowY: 'auto',
                                             overflowX: 'hidden',
                                         }}>
-                                        {character.aliases && character.aliases[0] != '' ?
+                                        {character.aliases && character.aliases[0] !== '' ?
                                             <List
                                                 size='small'
                                                 style={{ marginBottom: '1rem' }}
@@ -195,7 +195,7 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                                             />
                                             : null
                                         }
-                                        {character.titles && character.titles[0] != '' ?
+                                        {character.titles && character.titles[0] !== '' ?
                                             <List
                                                 size='small'
                                                 style={{ marginBottom: '1rem' }}

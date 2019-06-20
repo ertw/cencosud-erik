@@ -10,7 +10,7 @@ const App: React.FC = () => {
     <div className="App">
       <Router>
         <Layout>
-            <DataRequestWrapper />
+          <DataRequestWrapper />
           <Footer>
           </Footer>
         </Layout>
