@@ -1,4 +1,4 @@
-import {Houses, Characters, State as DataRequestWrapperState} from '../components/DataRequestWrapper'
+import {Houses, Characters, State as DataRequestWrapperState} from '../components/AppStateWrapper'
 
 export const endpoint = 'https://anapioficeandfire.com/api'
 export const fetchData = async () : Promise<DataRequestWrapperState> => {

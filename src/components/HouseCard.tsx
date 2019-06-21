@@ -5,7 +5,7 @@ import {
     Characters,
     HouseDetails,
     findCharacterByUrl,
-} from './DataRequestWrapper'
+} from './AppStateWrapper'
 
 const { Text, } = Typography
 

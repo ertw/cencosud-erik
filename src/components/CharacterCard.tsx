@@ -8,7 +8,7 @@ import {
     findCharacterByUrl,
     findHouseByUrlNumber,
     parseHouseUrlNumber,
-} from './DataRequestWrapper'
+} from './AppStateWrapper'
 
 const { Text, Title } = Typography
 

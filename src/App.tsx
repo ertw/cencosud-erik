@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import DataRequestWrapper from './components/DataRequestWrapper'
+import DataRequestWrapper from './components/AppStateWrapper'
 import { BrowserRouter as Router } from "react-router-dom";
 import { Layout } from 'antd';
 
