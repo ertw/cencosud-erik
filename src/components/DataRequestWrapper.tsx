@@ -10,12 +10,12 @@ import {
 import { withRouter, RouteComponentProps, Route } from 'react-router';
 import CharacterCard from './CharacterCard'
 import HouseCard from './HouseCard'
+import { fetchData, endpoint } from '../helpers/fetchData'
 
 const { Option } = Select
 const { Header, Content } = Layout;
 const { Title } = Typography
 
-const endpoint = 'https://anapioficeandfire.com/api'
 
 //
 // this module declaration is a workaround for missing label on <OptionProps>
@@ -26,7 +26,7 @@ declare module "antd/lib/select" {
     }
 }
 
-interface State {
+export interface State {
     error: any,
     isLoaded: boolean,
     houses: Houses,
@@ -95,45 +95,11 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
     }
 
     componentDidMount() {
-
-        const pageSize = 50
-
-            ; (async () => {
-                try {
-                    let housePageNumber = 1
-                    let houses: Houses = []
-                    let houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
-                    let returnedHouses = await houseResponse.json()
-                    houses = houses.concat(returnedHouses)
-                    while (returnedHouses.length === pageSize) {
-                        ++housePageNumber
-                        houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
-                        returnedHouses = await houseResponse.json()
-                        houses = houses.concat(returnedHouses)
-                    }
-                    let characterPageNumber = 1
-                    let characters: Characters = []
-                    let characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
-                    let returnedCharacters = await characterResponse.json()
-                    characters = characters.concat(returnedCharacters)
-                    while (returnedCharacters.length === pageSize) {
-                        ++characterPageNumber
-                        characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
-                        returnedCharacters = await characterResponse.json()
-                        characters = characters.concat(returnedCharacters)
-                    }
-                    this.setState({
-                        isLoaded: true,
-                        houses,
-                        characters,
-                    });
-                } catch(err) {
-                    this.setState({
-                        isLoaded: false,
-                        error: err
-                    })
-                }
-            })()
+        ; (async () => {
+            this.setState(
+                await fetchData()
+            )
+        })()
     }
 
     render() {
