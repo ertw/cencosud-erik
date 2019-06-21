@@ -83,7 +83,7 @@ export const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Ho
 export const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
     .find(character => character.url === characterUrl))
 
-class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
+class AppStateWrapper extends React.Component<RouteComponentProps, State> {
     constructor(props: RouteComponentProps) {
         super(props);
         this.state = {
@@ -164,4 +164,4 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
     }
 }
 
-export default withRouter(DataRequestWrapper)
+export default withRouter(AppStateWrapper)
