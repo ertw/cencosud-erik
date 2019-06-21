@@ -75,10 +75,13 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
-export const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
+const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
 
 export const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
     .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`))
+
+export const findHouseByUrl = (houseUrl: string, houses: Houses) => (houses
+    .find(house => house.url === houseUrl))
 
 export const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
     .find(character => character.url === characterUrl))

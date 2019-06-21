@@ -6,8 +6,7 @@ import {
     Houses,
     CharacterDetails,
     findCharacterByUrl,
-    findHouseByUrlNumber,
-    parseHouseUrlNumber,
+    findHouseByUrl,
 } from './AppStateWrapper'
 
 const { Text, Title } = Typography
@@ -78,7 +77,7 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
                 style={{ marginBottom: '1rem' }}
                 header={<div><Text strong>Allegiances</Text></div>}
                 bordered
-                dataSource={character.allegiances.map(allegiance => findHouseByUrlNumber(parseHouseUrlNumber(allegiance), houses)!.name)}
+                dataSource={character.allegiances.map(allegiance => findHouseByUrl(allegiance, houses)!.name)}
                 renderItem={item => (
                     <List.Item>
                         {item}
