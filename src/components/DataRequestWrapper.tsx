@@ -99,33 +99,40 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
         const pageSize = 50
 
             ; (async () => {
-                let housePageNumber = 1
-                let houses: Houses = []
-                let houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
-                let returnedHouses = await houseResponse.json()
-                houses = houses.concat(returnedHouses)
-                while (returnedHouses.length === pageSize) {
-                    ++housePageNumber
-                    houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
-                    returnedHouses = await houseResponse.json()
+                try {
+                    let housePageNumber = 1
+                    let houses: Houses = []
+                    let houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
+                    let returnedHouses = await houseResponse.json()
                     houses = houses.concat(returnedHouses)
-                }
-                let characterPageNumber = 1
-                let characters: Characters = []
-                let characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
-                let returnedCharacters = await characterResponse.json()
-                characters = characters.concat(returnedCharacters)
-                while (returnedCharacters.length === pageSize) {
-                    ++characterPageNumber
-                    characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
-                    returnedCharacters = await characterResponse.json()
+                    while (returnedHouses.length === pageSize) {
+                        ++housePageNumber
+                        houseResponse = await fetch(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
+                        returnedHouses = await houseResponse.json()
+                        houses = houses.concat(returnedHouses)
+                    }
+                    let characterPageNumber = 1
+                    let characters: Characters = []
+                    let characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
+                    let returnedCharacters = await characterResponse.json()
                     characters = characters.concat(returnedCharacters)
+                    while (returnedCharacters.length === pageSize) {
+                        ++characterPageNumber
+                        characterResponse = await fetch(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
+                        returnedCharacters = await characterResponse.json()
+                        characters = characters.concat(returnedCharacters)
+                    }
+                    this.setState({
+                        isLoaded: true,
+                        houses,
+                        characters,
+                    });
+                } catch {
+                    this.setState({
+                        isLoaded: false,
+                        error: true
+                    })
                 }
-                this.setState({
-                    isLoaded: true,
-                    houses,
-                    characters,
-                });
             })()
     }
 
@@ -160,17 +167,17 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                             ))}
                         </Select>
                     </Header>
-                    <Content style={{marginTop: '4rem'}}>
+                    <Content style={{ marginTop: '4rem' }}>
                         <Route exact path="/" component={() => (
                             <Card title={'Select a House'} style={{ width: '100%' }} />
                         )} />
                         <Route path={'/:house'} component={() => (
                             <React.Fragment>
                                 {houses
-                                        .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
-                                        .map(house => (
-                                            <HouseCard key={house.name} house={house} characters={characters} />
-                                        ))
+                                    .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
+                                    .map(house => (
+                                        <HouseCard key={house.name} house={house} characters={characters} />
+                                    ))
                                 }
                             </React.Fragment>
                         )} />
