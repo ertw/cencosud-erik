@@ -1,21 +1,12 @@
 import * as React from 'react'
 import {
-    Select,
-    Layout,
-    Col,
     Spin,
     Typography,
-    Card,
 } from 'antd'
-import { withRouter, RouteComponentProps, Route } from 'react-router';
-import CharacterCard from './CharacterCard'
-import HouseCard from './HouseCard'
+import { withRouter, RouteComponentProps } from 'react-router';
 import { fetchData, endpoint } from '../helpers/fetchData'
 
-const { Option } = Select
-const { Header, Content } = Layout;
 const { Title } = Typography
-
 
 //
 // this module declaration is a workaround for missing label on <OptionProps>
@@ -75,8 +66,6 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
-const parseHouseUrlNumber = (houseUrl: string) => (parseInt((houseUrl).split('/').pop() as string).toString())
-
 export const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
     .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`))
 
@@ -107,61 +96,19 @@ class AppStateWrapper extends React.Component<RouteComponentProps, State> {
 
     render() {
         const { error, isLoaded, houses, characters } = this.state
-        const { history } = this.props
+        const { children } = this.props
+
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div><Title>Loading external data...</Title><Spin /></div>
         } else {
+            const childrenWithProps = React.Children
+                .map(children, child =>
+                    React.cloneElement(child as React.ReactElement<any>, { houses, characters })
+                )
             return (
-                <Layout>
-                    <Header style={{ position: 'fixed', width: '100%', zIndex: 1, padding: '0 1rem' }}>
-                        <Select
-                            showSearch
-                            style={{ float: 'right', margin: '1rem 0', width: '15rem' }}
-                            placeholder="Select a House"
-                            onChange={(value, option) => {
-                                history.push(parseHouseUrlNumber(value as string))
-                            }}
-                            optionLabelProp="children"
-                        >
-                            {houses.map((house, index: number) => (
-                                <Option
-                                    key={index}
-                                    value={JSON.stringify({ name: house.name, url: house.url })}
-                                    label={house.name}
-                                >
-                                    {house.name}
-                                </Option>
-                            ))}
-                        </Select>
-                    </Header>
-                    <Content style={{ marginTop: '4rem' }}>
-                        <Route exact path="/" component={() => (
-                            <Card title={'Select a House'} style={{ width: '100%' }} />
-                        )} />
-                        <Route path={'/:house'} component={() => (
-                            <React.Fragment>
-                                {houses
-                                    .filter(house => (house.url === `${endpoint}/houses${history.location.pathname}`))
-                                    .map(house => (
-                                        <HouseCard key={house.name} house={house} characters={characters} />
-                                    ))
-                                }
-                            </React.Fragment>
-                        )} />
-                        {characters
-                            .filter(character => (character.allegiances
-                                .find(allegiance => allegiance === `${endpoint}/houses${history.location.pathname}`)))
-                            .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
-                            .map((character, index) => (
-                                <Col span={8} key={index}>
-                                    <CharacterCard key={character.name} houses={houses} characters={characters} character={character} />
-                                </Col>
-                            ))
-                        }
-                    </Content>
-                </Layout >
+                childrenWithProps
             );
         }
     }
