@@ -127,10 +127,10 @@ class DataRequestWrapper extends React.Component<RouteComponentProps, State> {
                         houses,
                         characters,
                     });
-                } catch {
+                } catch(err) {
                     this.setState({
                         isLoaded: false,
-                        error: true
+                        error: err
                     })
                 }
             })()
