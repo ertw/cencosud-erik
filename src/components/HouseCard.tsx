@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styles from './CharacterCard.module.css'
+import styles from './HouseCard.module.css'
 import { Card, Col, Row, Typography } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 import {
@@ -23,7 +23,7 @@ const HouseCard: React.FunctionComponent<Props> = (props) => {
     const house = findHouseByUrl(`${endpoint}/houses${history.location.pathname}`, houses)
 
     return (
-        <Card title={house.name} className={styles.card}>
+        <Card title={house.name} className={styles.card} >
             <Row>
                 {house.currentLord ?
                     <Col span={8}>
