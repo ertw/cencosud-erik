@@ -5,10 +5,15 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Layout, Card } from 'antd';
 import CharacterWrapper from './components/CharacterWrapper';
 import HouseSearch from './components/HouseSearch'
+import HouseCard from './components/HouseCard'
 
 const { Header, Content } = Layout;
+const routes = {
+  home: '/',
+  house: '/:house',
+}
 
-const App: React.FC = () => {
+const App: React.FC = (props) => {
   return (
     <div className="App">
       <Router>
@@ -24,13 +29,16 @@ const App: React.FC = () => {
                 </HouseAndCharacterContext.Consumer>
               </Header>
               <Content style={{ marginTop: '4rem' }}>
-                <Route exact path="/" component={() => (
+                <Route exact path={routes.home} component={() => (
                   <Card title={'Select a House'} style={{ width: '100%' }} />
                 )} />
-                <Route path={'/:house'} component={() => (
+                <Route path={routes.house} component={() => (
                   <HouseAndCharacterContext.Consumer>
                     {value => (value.isLoaded ?
-                      <CharacterWrapper {...value} />
+                      <React.Fragment>
+                        <HouseCard {...value} />
+                        <CharacterWrapper {...value} />
+                      </React.Fragment>
                       : null
                     )}
                   </HouseAndCharacterContext.Consumer>

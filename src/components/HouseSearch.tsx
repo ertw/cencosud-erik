@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styles from './HouseSearch.module.css'
 import { Select, } from "antd"
 import { withRouter, RouteComponentProps } from "react-router"
 import { State } from './AppStateWrapper'
@@ -18,7 +19,7 @@ const HouseSearch: React.FunctionComponent<Props> = (props) => {
     return (
         <Select
             showSearch
-            style={{ float: 'right', margin: '1rem 0', width: '15rem' }}
+            className={styles.select}
             placeholder="Select a House"
             onChange={(value, option) => {
                 history.push(parseHouseUrlNumber(value as string))

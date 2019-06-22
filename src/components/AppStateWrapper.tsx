@@ -45,6 +45,13 @@ export interface HouseDetails {
     swornMembers?: string[];
 }
 
+const houseError : HouseDetails = {
+    name: 'Error: unable to load house details',
+    region: 'Error: unable to load house details',
+    words: 'Error: unable to load house details',
+    currentLord: 'Error: unable to load house details',
+}
+
 export interface Characters extends Array<CharacterDetails> { }
 
 export interface CharacterDetails {
@@ -76,10 +83,10 @@ export const HouseAndCharacterContext = React.createContext(
 )
 
 export const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
-    .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`))
+    .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`) || houseError)
 
 export const findHouseByUrl = (houseUrl: string, houses: Houses) => (houses
-    .find(house => house.url === houseUrl))
+    .find(house => house.url === houseUrl) || houseError)
 
 export const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
     .find(character => character.url === characterUrl))

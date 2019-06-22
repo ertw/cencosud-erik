@@ -1,0 +1,17 @@
+.gender {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.charactercard {
+    height: 25rem;
+    margin: 1rem;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.list {
+    margin-bottom: 1rem;
+}

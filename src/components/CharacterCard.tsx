@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styles from './CharacterCard.module.css'
 import { Card, Typography, List } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 import {
@@ -29,23 +30,16 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
         <Card
             title={<React.Fragment>
                 <Title level={2}>{character.name}</Title>
-                <Text style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+                <Text className={styles.gender}>
                     {character.gender === 'Male' ? '♂' : '♀'}
                 </Text>
                 {character.born ? <div><Text type='secondary'>{`Born ${character.born}`}</Text></div> : null}
                 {character.died ? <div><Text type='secondary'>{`Died ${character.died}`}</Text></div> : null}
             </React.Fragment>}
-            style={{
-                height: '25rem',
-                margin: '1rem',
-                textAlign: 'left',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-            }}>
+            className={styles.charactercard}>
             {character.aliases && character.aliases[0] !== '' ?
                 <List
-                    size='small'
-                    style={{ marginBottom: '1rem' }}
+                    className={styles.list}
                     header={<div><Text strong>Aliases</Text></div>}
                     bordered
                     dataSource={character.aliases}
@@ -60,7 +54,7 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
             {character.titles && character.titles[0] !== '' ?
                 <List
                     size='small'
-                    style={{ marginBottom: '1rem' }}
+                    className={styles.list}
                     header={<div><Text strong>Titles</Text></div>}
                     bordered
                     dataSource={character.titles}
@@ -74,7 +68,7 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
             }
             <List
                 size='small'
-                style={{ marginBottom: '1rem' }}
+                className={styles.list}
                 header={<div><Text strong>Allegiances</Text></div>}
                 bordered
                 dataSource={character.allegiances.map(allegiance => findHouseByUrl(allegiance, houses)!.name)}
@@ -87,7 +81,7 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
             {character.culture || character.father || character.mother || character.spouse ?
                 <List
                     size='small'
-                    style={{ marginBottom: '1rem' }}
+                    className={styles.list}
                     header={<div><Text strong>Other Data</Text></div>}
                     bordered
                     dataSource={[
