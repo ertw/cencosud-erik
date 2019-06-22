@@ -45,11 +45,12 @@ export interface HouseDetails {
     swornMembers?: string[];
 }
 
-const houseError : HouseDetails = {
-    name: 'Error: unable to load house details',
-    region: 'Error: unable to load house details',
-    words: 'Error: unable to load house details',
-    currentLord: 'Error: unable to load house details',
+const houseErrorMsg = 'Error: unable to load house details'
+const houseError: HouseDetails = {
+    name: houseErrorMsg,
+    region: houseErrorMsg,
+    words: houseErrorMsg,
+    currentLord: houseErrorMsg,
 }
 
 export interface Characters extends Array<CharacterDetails> { }
@@ -73,6 +74,21 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
+const characterErrorMsg = 'Error: unable to load character details'
+const characterError: CharacterDetails = {
+    name: characterErrorMsg,
+    gender: characterErrorMsg,
+    culture: characterErrorMsg,
+    born: characterErrorMsg,
+    died: characterErrorMsg,
+    titles: [characterErrorMsg],
+    aliases: [characterErrorMsg],
+    father: characterErrorMsg,
+    mother: characterErrorMsg,
+    spouse: characterErrorMsg,
+    allegiances: [characterErrorMsg],
+}
+
 export const HouseAndCharacterContext = React.createContext(
     {
         houses: [],
@@ -89,7 +105,7 @@ export const findHouseByUrl = (houseUrl: string, houses: Houses) => (houses
     .find(house => house.url === houseUrl) || houseError)
 
 export const findCharacterByUrl = (characterUrl: string, characters: Characters) => (characters
-    .find(character => character.url === characterUrl))
+    .find(character => character.url === characterUrl) || characterError)
 
 class AppStateWrapper extends React.Component<RouteComponentProps, State> {
     constructor(props: RouteComponentProps) {

@@ -71,7 +71,7 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
                 className={styles.list}
                 header={<div><Text strong>Allegiances</Text></div>}
                 bordered
-                dataSource={character.allegiances.map(allegiance => findHouseByUrl(allegiance, houses)!.name)}
+                dataSource={character.allegiances.map(allegiance => findHouseByUrl(allegiance, houses).name)}
                 renderItem={item => (
                     <List.Item>
                         {item}
@@ -88,7 +88,7 @@ const CharacterCard: React.FunctionComponent<Props> = (props) => {
                         character.culture ? `Culture: ${character.culture}` : null,
                         character.father ? `Father: ${character.father}` : null,
                         character.mother ? `Mother: ${character.mother}` : null,
-                        character.spouse ? `Spouse: ${findCharacterByUrl(character.spouse, characters)!.name}` : null,
+                        character.spouse ? `Spouse: ${findCharacterByUrl(character.spouse, characters).name}` : null,
                     ].filter(x => !!x)}
                     renderItem={item => (
                         <List.Item>

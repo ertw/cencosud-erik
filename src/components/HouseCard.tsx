@@ -26,7 +26,7 @@ const HouseCard: React.FunctionComponent<Props> = (props) => {
             <Row>
                 {house.currentLord ?
                     <Col span={8}>
-                        <Text>Current Lord: </Text><Text>{findCharacterByUrl(house.currentLord, characters)!.name}</Text>
+                        <Text>Current Lord: </Text><Text>{findCharacterByUrl(house.currentLord, characters).name}</Text>
                     </Col>
                     : null
                 }
