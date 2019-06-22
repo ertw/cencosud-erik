@@ -2,26 +2,24 @@ import * as React from 'react'
 import { Card, Col, Row, Typography } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router';
 import {
-    Characters,
-    HouseDetails,
     findCharacterByUrl,
     State,
+    findHouseByUrl,
 } from './AppStateWrapper'
+import { endpoint } from '../helpers/fetchData';
 
 const { Text, } = Typography
 
-
 interface Props extends RouteComponentProps { }
-interface Props extends State {
-    house: HouseDetails,
-}
+interface Props extends State { }
 
 const HouseCard: React.FunctionComponent<Props> = (props) => {
-
     const {
-        house,
         characters,
+        history,
+        houses,
     } = props
+    const house = findHouseByUrl(`${endpoint}/houses${history.location.pathname}`, houses)
 
     return (
         <Card title={house.name} style={{ width: '100%' }}>
