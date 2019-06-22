@@ -5,14 +5,15 @@ import {
     Characters,
     HouseDetails,
     findCharacterByUrl,
+    State,
 } from './AppStateWrapper'
 
 const { Text, } = Typography
 
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps { }
+interface Props extends State {
     house: HouseDetails,
-    characters: Characters,
 }
 
 const HouseCard: React.FunctionComponent<Props> = (props) => {

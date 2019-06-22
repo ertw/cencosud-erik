@@ -66,6 +66,15 @@ export interface CharacterDetails {
     playedBy?: string[];
 }
 
+export const HouseAndCharacterContext = React.createContext(
+    {
+        houses: [],
+        characters: [],
+        isLoaded: false,
+        error: null,
+    } as State
+)
+
 export const findHouseByUrlNumber = (houseUrlNumber: string | number, houses: Houses) => (houses
     .find(house => house.url === `${endpoint}/houses/${houseUrlNumber}`))
 
@@ -95,22 +104,19 @@ class AppStateWrapper extends React.Component<RouteComponentProps, State> {
     }
 
     render() {
-        const { error, isLoaded, houses, characters } = this.state
+        const { error, isLoaded } = this.state
         const { children } = this.props
 
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div><Title>Loading external data...</Title><Spin /></div>
-        } else {
-            const childrenWithProps = React.Children
-                .map(children, child =>
-                    React.cloneElement(child as React.ReactElement<any>, { houses, characters })
-                )
-            return (
-                childrenWithProps
-            );
         }
+        return (
+            <HouseAndCharacterContext.Provider value={{ ...this.state }}>
+                {children}
+            </HouseAndCharacterContext.Provider>
+        );
     }
 }
 
