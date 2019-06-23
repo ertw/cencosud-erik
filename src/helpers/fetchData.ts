@@ -1,40 +1,36 @@
-import { Houses, Characters, State as DataRequestWrapperState } from '../components/AppStateWrapper'
+import { Houses, Characters, State as DataRequestWrapperState, HouseDetails, CharacterDetails } from '../components/AppStateWrapper'
 
 export const endpoint = 'https://anapioficeandfire.com/api'
 
-const fetchAndThrowOnError = async (request: string) => {
-    const response = await fetch(request)
-    if (response.ok) {
-        return (response)
+const apiRequestor = (data: 'houses' | 'characters') => {
+    const makeSingleRequest = async function (pageNo = 1) {
+        const pageSize = 50
+        const apiResponse = await fetch(`${endpoint}/${data}?page=${pageNo}&pageSize=${pageSize}`)
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json()
+                }
+                throw Error(resp.statusText)
+            })
+        return apiResponse
     }
-    throw Error(response.statusText)
+
+    const makeAllRequests = async (pageNo = 1): Promise<HouseDetails[] | CharacterDetails[]> => {
+        const results = await makeSingleRequest(pageNo)
+        console.log("Retreiving data from API for page : " + pageNo)
+        if (results.length > 0) {
+            return results.concat(await makeAllRequests(pageNo + 1))
+        } else {
+            return results
+        }
+    }
+    return (makeAllRequests())
 }
 
 export const fetchData = async (): Promise<DataRequestWrapperState> => {
-    const pageSize = 50
     try {
-        let housePageNumber = 1
-        let houses: Houses = []
-        let houseResponse = await fetchAndThrowOnError(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
-        let returnedHouses = await houseResponse.json()
-        houses = houses.concat(returnedHouses)
-        while (returnedHouses.length === pageSize) {
-            ++housePageNumber
-            houseResponse = await fetchAndThrowOnError(`${endpoint}/houses?page=${housePageNumber}&pageSize=${pageSize}`)
-            returnedHouses = await houseResponse.json()
-            houses = houses.concat(returnedHouses)
-        }
-        let characterPageNumber = 1
-        let characters: Characters = []
-        let characterResponse = await fetchAndThrowOnError(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
-        let returnedCharacters = await characterResponse.json()
-        characters = characters.concat(returnedCharacters)
-        while (returnedCharacters.length === pageSize) {
-            ++characterPageNumber
-            characterResponse = await fetchAndThrowOnError(`${endpoint}/characters?page=${characterPageNumber}&pageSize=${pageSize}`)
-            returnedCharacters = await characterResponse.json()
-            characters = characters.concat(returnedCharacters)
-        }
+        const houses = await apiRequestor('houses') as Houses
+        const characters = await apiRequestor('characters') as Characters
         return ({
             isLoaded: true,
             houses,
