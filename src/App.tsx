@@ -45,12 +45,6 @@ const App: React.FC = (props) => {
                     )}
                   </HouseAndCharacterContext.Consumer>
                 )} />
-                <HouseAndCharacterContext.Consumer>
-                  {value => (value.isLoaded ?
-                    <CharacterWrapper {...value} />
-                    : null
-                  )}
-                </HouseAndCharacterContext.Consumer>
               </Content>
             </Layout >
           </AppStateWrapper>
