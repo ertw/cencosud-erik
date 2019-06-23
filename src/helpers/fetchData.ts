@@ -1,4 +1,4 @@
-import { Houses, Characters, State as DataRequestWrapperState, HouseDetails, CharacterDetails } from '../components/AppStateWrapper'
+import { Houses, Characters, State as DataRequestWrapperState, } from '../components/AppStateWrapper'
 
 export const endpoint = 'https://anapioficeandfire.com/api'
 
@@ -15,7 +15,7 @@ const apiRequestor = (data: 'houses' | 'characters') => {
         return apiResponse
     }
 
-    const makeAllRequests = async (pageNo = 1): Promise<HouseDetails[] | CharacterDetails[]> => {
+    const makeAllRequests = async (pageNo = 1): Promise<Houses | Characters> => {
         const results = await makeSingleRequest(pageNo)
         console.log("Retreiving data from API for page : " + pageNo)
         if (results.length > 0) {
