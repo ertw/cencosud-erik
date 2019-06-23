@@ -23,7 +23,12 @@ const CharacterWrapper: React.FunctionComponent<Props> = (props) => {
                         .find(allegiance => allegiance === `${endpoint}/houses${history.location.pathname}`)))
                     .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                     .map((character, index) => (
-                        <CharacterCard key={`${character.name}-${index}`} houses={houses} characters={characters} character={character} />
+                            <CharacterCard
+                                key={`${character.name}-${index}`}
+                                houses={houses}
+                                characters={characters}
+                                character={character}
+                            />
                     ))
             }
         </div>
