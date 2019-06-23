@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Col } from "antd"
+import styles from './CharacterWrapper.module.css'
 import { withRouter, RouteComponentProps } from "react-router"
 import { endpoint } from "../helpers/fetchData"
 import { State } from './AppStateWrapper'
@@ -16,19 +16,17 @@ const CharacterWrapper: React.FunctionComponent<Props> = (props) => {
     } = props
 
     return (
-        <React.Fragment>
+        <div className={styles.characterWrapper}>
             {
                 characters
                     .filter(character => (character.allegiances
                         .find(allegiance => allegiance === `${endpoint}/houses${history.location.pathname}`)))
                     .sort((c1, c2) => (c1.name > c2.name ? 1 : -1))
                     .map((character, index) => (
-                        <Col span={8} key={index}>
-                            <CharacterCard key={character.name} houses={houses} characters={characters} character={character} />
-                        </Col>
+                        <CharacterCard key={`${character.name}-${index}`} houses={houses} characters={characters} character={character} />
                     ))
             }
-        </React.Fragment >
+        </div>
     )
 }
 
