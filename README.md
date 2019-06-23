@@ -1,19 +1,27 @@
 # Game of Thrones API consumption demo
 
-## Dev environment 
+## Dev environment
 
-### Tested on:
+### Tested on
+
 * Ubuntu 18.04 / 18.10
 * Node v8.16.0 / v10.15.2
 * npm 6.4.1 / 6.9.0
 * Firefox 67 / Chrome 75
 
-### Installing and running:
+### Installing and running
+
 1. Clone Repo
 1. Run `npm i`
 1. Run `npm start`
 
 If running in an Amazon Cloud9 environment, follow the same procedure, then click on Preview > Running Application to get the preview URL
+
+### Developer guidelines
+
+* Linting: vscode defaults (open to other options)
+* Compiler settings are strict- do not commit any code with warnings or errors!
+* Do not use the null-assertion (`!`) operator!
 
 ---
 
@@ -40,13 +48,15 @@ If running in an Amazon Cloud9 environment, follow the same procedure, then clic
 
 ## Troubleshooting
 
-#### Error: `npm does not support Node.js v10.15.2`
+### Error: `npm does not support Node.js v10.15.2`
+
 * Problem: npm is wrong version
 * Solution: `sudo npm install npm -g`
 
-#### Error: Hot reloading not working
+### Error: Hot reloading not working
+
 * Problem: some limit being hit by the watcher
 * Solution: `sudo echo 1048576 > /proc/sys/fs/inotify/max_user_watches`
-* Source: https://stackoverflow.com/a/42311067
+* [Source](https://stackoverflow.com/a/42311067)
 
 ---
