@@ -22,6 +22,7 @@ If running in an Amazon Cloud9 environment, follow the same procedure, then clic
 * Linting: vscode defaults (open to other options)
 * Compiler settings are strict- do not commit any code with warnings or errors!
 * Do not use the null-assertion (`!`) operator!
+* Develop in individual feature branches, then merge > `stage` > `deploy` > `master`
 
 ---
 
@@ -29,8 +30,9 @@ If running in an Amazon Cloud9 environment, follow the same procedure, then clic
 
 ### CI/CD with AWS Amplify
 
-* After verifying local build, push to `stage` branch, and wait for CI to run tests and build. Verify on [stage.erik.cl](https://stage.erik.cl)
-* After verifying local build, push to `deploy` branch, and wait for CI to run tests and build. Verify on [deploy.erik.cl](https://deploy.erik.cl)
+1. After verifying local build, push to `stage` branch, and wait for CI to run tests and build. Verify on [stage.erik.cl](https://stage.erik.cl)
+1. After verifying local build, push to `deploy` branch, and wait for CI to run tests and build. Verify on [deploy.erik.cl](https://deploy.erik.cl)
+1. After verifying on deploy, merge into `master` so that `master` always is representative of prod
 
 ---
 
